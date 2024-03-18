@@ -14,7 +14,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-        String query = "CREATE TABLE users"
+        String query = "CREATE TABLE IF NOT EXISTS users"
                         + "("
                         + " id int auto_increment primary key,"
                         + " name varchar(45) not null,"
@@ -28,7 +28,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String query = "DROP TABLE users";
+        String query = "DROP TABLE IF EXISTS users";
 
         try (Statement statement = Util.getConnection().createStatement()) {
             statement.execute(query);
@@ -63,9 +63,11 @@ public class UserDaoJDBCImpl implements UserDao {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                userList.add(new User(resultSet.getString(2)
-                        , resultSet.getString(3)
-                        , resultSet.getByte(4)));
+                User user = new User(resultSet.getString("name")
+                        , resultSet.getString("last_name")
+                        , resultSet.getByte("age"));
+                user.setId(resultSet.getLong("id"));
+                userList.add(user);
             }
         } catch (SQLException ignore) { }
 
