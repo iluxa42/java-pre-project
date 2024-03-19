@@ -13,6 +13,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void createUsersTable() {
         String query = "CREATE TABLE IF NOT EXISTS users"
                         + "("
@@ -27,6 +28,7 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException ignore) { }
     }
 
+    @Override
     public void dropUsersTable() {
         String query = "DROP TABLE IF EXISTS users";
 
@@ -35,6 +37,7 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException ignore) { }
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         String query = "INSERT INTO users (name, last_name, age) VALUES(?,?,?)";
 
@@ -42,10 +45,11 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
-            preparedStatement.execute();
+            preparedStatement.executeUpdate();
         } catch (SQLException ignore) { }
     }
 
+    @Override
     public void removeUserById(long id) {
         String query = "DELETE FROM users WHERE id=?";
 
@@ -55,6 +59,7 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException ignore) { }
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String query = "SELECT * FROM users";
@@ -74,6 +79,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return userList;
     }
 
+    @Override
     public void cleanUsersTable() {
         //String query = "DELETE FROM users";
         String query = "TRUNCATE TABLE users";
