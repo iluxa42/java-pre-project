@@ -25,7 +25,9 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try (Statement statement = Util.getConnection().createStatement()) {
             statement.execute(query);
-        } catch (SQLException ignore) { }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -34,7 +36,9 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try (Statement statement = Util.getConnection().createStatement()) {
             statement.execute(query);
-        } catch (SQLException ignore) { }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -46,7 +50,9 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
-        } catch (SQLException ignore) { }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -56,7 +62,9 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement preparedStatement = Util.getConnection().prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-        } catch (SQLException ignore) { }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -74,14 +82,15 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setId(resultSet.getLong("id"));
                 userList.add(user);
             }
-        } catch (SQLException ignore) { }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return userList;
     }
 
     @Override
     public void cleanUsersTable() {
-        //String query = "DELETE FROM users";
         String query = "TRUNCATE TABLE users";
 
         try (Statement statement = Util.getConnection().createStatement()) {
