@@ -17,7 +17,7 @@ public class Main {
         userService.saveUser("Viktor", "Sidorov", (byte) 53);
         userService.saveUser("Ivan", "Ivanov", (byte) 16);
 
-        //userDao.removeUserById(1L);
+        userService.removeUserById(1L);
 
         List<User> userList = userService.getAllUsers();
         userList.forEach(System.out::println);
