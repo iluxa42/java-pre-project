@@ -6,9 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,23 +15,24 @@ public class Util {
     private static final String PASS = "root";
     private static final String URL = "jdbc:mysql://localhost:3306/kata_db1";
 
-    private static SessionFactory sessionFactory;
+    public static SessionFactory getSessionFactory() {
+        SessionFactory sessionFactory = null;
 
-    static {
         Map<String, String> settings = new HashMap<>();
         settings.put("connection.driver_class", "com.mysql.jdbc.Driver");
         settings.put("hibernate.connection.url", URL);
         settings.put("hibernate.connection.username", USER);
         settings.put("hibernate.connection.password", PASS);
         settings.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        settings.put("hibernate.use_sql_comments", "true");
-//        settings.put("hibernate.current_session_context_class", "thread");
-        settings.put("hibernate.show_sql", "true");
-        settings.put("hibernate.format_sql", "true");
+        settings.put("hibernate.current_session_context_class", "thread");
+//        settings.put("hibernate.use_sql_comments", "true");
+//        settings.put("hibernate.show_sql", "true");
+//        settings.put("hibernate.format_sql", "true");
 
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+        StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(settings)
                 .build();
+
         try {
             sessionFactory = new MetadataSources(registry)
                     .addAnnotatedClass(User.class)
@@ -43,9 +42,7 @@ public class Util {
         } catch (Exception e) {
             StandardServiceRegistryBuilder.destroy(registry);
         }
-    }
 
-    public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
